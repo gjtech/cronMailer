@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# mailFile.func.sh: Functions for mailing text file
+# cronMailer.sh: Plugin for mailing cron reports
 #
-#  . /etc/cron.includes/mailFile.func.sh
+#  . /etc/cron.includes/cronMailer.sh
 #
 #  MailFileCreate "/path/to/file.txt (optional if defined, otherwise required)"
 #  MailFileSMTP "Sender <sender@domain.com> (required, can be empty)" \
@@ -12,20 +12,20 @@
 #
 #
 #
-mailFrom="Me <sender@domain.com>"
-mailSubject="My File"
-mailTo="recipient@domain.com"
-mailFile="/path/to/file.txt"
+mailFrom="Me <sender@domain.com>";
+mailSubject="My File";
+mailTo="recipient@domain.com";
+mailFile="/path/to/file.txt";
 
 # Sendmail utility
-mailExe="/usr/bin/mail"
+mailExe="/usr/bin/mail";
 
 #################################
 ##                             ##
 ## DO NOT EDIT BELOW THIS LINE ##
 ##                             ##
 #################################
-createMailFile="NO"
+createMailFile="NO";
 
 # Function: MailFileCreate()
 # Create pending mail file
@@ -33,19 +33,19 @@ function MailFileCreate()
 {
 	if [ "$1" ];
 	then
-		mailFile="$1"
+		mailFile="$1";
 	fi
 
 	if [ ${createMailFile} == "YES" ];
 	then
 		if [ -e ${mailFile} ];
 		then
-			rm ${mailFile}
+			rm ${mailFile};
 		fi
 	fi
 
-	touch ${mailFile}
-	return
+	touch ${mailFile};
+	return;
 }
 
 # Function: mailFileSTMTP
@@ -54,22 +54,22 @@ function MailFileSMTP()
 {
 	if [ "$1" ] && [ ! -z "$1" ];
 	then
-		mailFrom="$1"
+		mailFrom="$1";
 	fi
 
 	if [ "$2" ] && [ ! -z "$2" ];
 	then
-		mailSubject="$2"
+		mailSubject="$2";
 	fi
 
 	if [ "$3" ] && [ ! -z "$3" ];
 	then
-		mailTo="$3"
+		mailTo="$3";
 	fi
 
 	if [ "$4" ] && [ ! -z "$4" ];
 	then
-		mailFile="$4"
+		mailFile="$4";
 	fi
 
 	if [ -e "${mailFile}" ];
@@ -78,25 +78,25 @@ function MailFileSMTP()
 		then
 			if [ -x "${mailExe}" ];
 			then
-				${mailExe} -a FROM:"${mailFrom}" -s "${mailSubject}" ${mailTo} < ${mailFile}
+				${mailExe} -a FROM:"${mailFrom}" -s "${mailSubject}" ${mailTo} < ${mailFile};
 			else
-				echo "nothing"
+				echo "nothing";
 			fi
 		fi
-		rm ${mailFile}
+		rm ${mailFile};
 	fi
 
 	# Unset variable for creating new log file
-	createMailFile="NO"
-	return
+	createMailFile="NO";
+	return;
 }
 
 # Function: echoMailFile
 # Add new line to file to be mailed
 function echoMailFile()
 {
-	echo "" >> ${mailFile}
-	return
+	echo "" >> ${mailFile};
+	return;
 }
 
 ##
